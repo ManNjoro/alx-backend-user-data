@@ -5,6 +5,8 @@ Script that obfuscates the log message
 
 from typing import List
 import logging
+import mysql.connector
+import os
 import re
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
@@ -50,3 +52,16 @@ def get_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
     logger.propagate = False
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """Get database connection."""
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    database = os.getenv("PERSONAL_DATA_DB_NAME", "")
+
+    connection = mysql.connector.connect(
+        host=host, user=user, password=password,
+        database=database, port=3306)
+    return connection
