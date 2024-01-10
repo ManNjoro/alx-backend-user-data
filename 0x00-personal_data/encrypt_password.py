@@ -6,7 +6,7 @@ Password encryption
 import bcrypt
 
 
-def hash_password(password: str) -> str:
+def hash_password(password: str) -> bytes:
     """Hash a password using the bcrypt algorithm."""
     salt = bcrypt.gensalt()  # Generate a random salt
     return bcrypt.hashpw(password.encode('utf-8'), salt)
