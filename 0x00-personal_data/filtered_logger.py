@@ -8,7 +8,7 @@ import logging
 import re
 
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields, redaction, message, separator) -> str:
     """Obfuscate specified fields in a log message."""
     return re.sub(
         r'(' + '|'.join(fields) + r')=[^{}]*'.format(
@@ -22,7 +22,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]):
+    def __init__(self, fields: List[str]) -> None:
         """Initialize the RedactingFormatter."""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
