@@ -3,6 +3,7 @@
 manages the API authentication.
 """
 
+import os
 from flask import request
 from typing import List, TypeVar
 
@@ -48,3 +49,12 @@ class Auth:
         Gets the current user
         """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        Get the cookie used to store the session key.
+        """
+        if request is None:
+            return None
+        SESSION_NAME = os.getenv("SESSION_NAME")
+        return request.cookies.get(SESSION_NAME)
