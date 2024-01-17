@@ -55,3 +55,17 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(session_id)
         user = User.get(user_id)
         return user
+
+    def destroy_session(self, request=None):
+        """
+        Clear the session cookie and remove any association between a
+        user and a session.
+        """
+        session_id = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_id)
+        if request is None or session_id is None:
+            return False
+        if user_id is None:
+            return False
+        del self.user_id_by_session_id[session_id]
+        return True
