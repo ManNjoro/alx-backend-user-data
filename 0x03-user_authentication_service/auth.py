@@ -19,6 +19,15 @@ def _hash_password(password: str) -> bytes:
     return bcrypt.hashpw(password.encode('utf-8'), salt)
 
 
+def _generate_uuid() -> str:
+    """
+    Generates a unique UUID.
+    Returns:
+    A string representation of a UUID4.
+    """
+    return str(uuid.uuid4())
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
@@ -58,10 +67,18 @@ class Auth:
         except Exception:
             return False
 
-    def _generate_uuid(self) -> str:
-        """
-        Generates a unique UUID.
+    def create_session(self, email: str) -> str:
+        """Creates a session token for a given user's email.
+        Args:
+        email (str): The email address of the user logging in.
         Returns:
-        A string representation of a UUID4.
+        A new session token as a string.
         """
-        return str(uuid.uuid4())
+        try:
+            user = self._db.find_user_by(email=email)
+            if user:
+                session_id = _generate_uuid()
+                self._db.update_user(user.id, session_id=session_id)
+                return session_id
+        except Exception:
+            return None
