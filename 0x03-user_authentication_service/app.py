@@ -77,7 +77,7 @@ def profile():
 
 
 @app.route('/reset_token', methods=['POST'])
-def reset_token():
+def get_reset_password_token():
     """Reset a token for a given email address
     """
     email = request.form.get('email')
