@@ -77,12 +77,12 @@ def profile():
 
 
 @app.route('/reset_token', methods=['POST'])
-def get_reset_password_token():
+def get_reset_password_token() -> str:
     """Reset a token for a given email address
     """
     email = request.form.get('email')
     try:
-        token = AUTH.get_reset_password_token(email=email)
+        token = AUTH.get_reset_password_token(email)
         return jsonify({"email": f"{email}", "reset_token": f"{token}"}), 200
     except ValueError:
         abort(403)
